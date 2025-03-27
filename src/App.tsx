@@ -319,7 +319,7 @@ const App: React.FC = () => {
                                   e.currentTarget.style.color = "#ffffff";
                                 }}
                               >
-                                View Transition
+                                Dynamic Morph
                               </Button>
                               <h3 style={{ fontSize: "16px", margin: "0 0 16px 0" }}>Preview Output</h3>
                               <p

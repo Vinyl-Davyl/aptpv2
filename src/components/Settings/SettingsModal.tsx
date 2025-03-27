@@ -68,30 +68,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
         items={[
           {
             key: "1",
-            label: "Appearance",
-            children: (
-              <SettingsSection>
-                <h4>Theme</h4>
-                <Switch checked={isDark} checkedChildren="Dark" unCheckedChildren="Light" />
-              </SettingsSection>
-            ),
-          },
-          {
-            key: "2",
-            label: "Editor",
-            children: (
-              <SettingsSection>
-                <h4>Editor Settings</h4>
-                <Form layout="vertical">
-                  <Form.Item label="Font Size" name="fontSize">
-                    <Input type="number" min={8} max={32} defaultValue={14} />
-                  </Form.Item>
-                </Form>
-              </SettingsSection>
-            ),
-          },
-          {
-            key: "3",
             label: "API Keys",
             children: (
               <SettingsSection>
@@ -119,6 +95,30 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                     </Button>
                   </Form.Item>
                 </APIForm>
+              </SettingsSection>
+            ),
+          },
+          {
+            key: "2",
+            label: "Editor",
+            children: (
+              <SettingsSection>
+                <h4>Editor Settings</h4>
+                <Form layout="vertical">
+                  <Form.Item label="Font Size" name="fontSize">
+                    <Input type="number" min={8} max={32} defaultValue={14} />
+                  </Form.Item>
+                </Form>
+              </SettingsSection>
+            ),
+          },
+          {
+            key: "3",
+            label: "Theme",
+            children: (
+              <SettingsSection>
+                <h4>Theme</h4>
+                <Switch checked={isDark} checkedChildren="Dark" unCheckedChildren="Light" />
               </SettingsSection>
             ),
           },
