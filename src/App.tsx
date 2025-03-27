@@ -4,8 +4,6 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { App as AntdApp, Layout, Row, Col, Tabs, Button, Spin } from "antd"; // Added Spin for loading
 import { Routes, Route, useNavigate } from "react-router-dom";
-import SampleDropdown from "./components/SampleDropdown";
-import UseShare from "./components/UseShare";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import TemplateMarkdown from "./editors/editorsContainer/TemplateMarkdown";
@@ -17,7 +15,6 @@ import useAppStore from "./store/store";
 import ResizableSplitPane from "./components/ResizableSplitPane";
 import SettingsModal from "./components/Settings/SettingsModal";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Console from "./components/Console/Console";
 import { handleError } from "./utils/console/errorHandling";
 import TopControls from "./components/TopControls";
 
