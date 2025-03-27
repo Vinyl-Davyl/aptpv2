@@ -21,6 +21,9 @@ const TemplateMarkdown: React.FC = () => {
         padding: "16px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <div
@@ -57,7 +60,7 @@ const TemplateMarkdown: React.FC = () => {
         style={{
           color: "#f8f8f2",
           borderRadius: "4px",
-          minHeight: "500px",
+          flex: 1, // This will make it take the remaining space
           fontFamily: "'Consolas', 'Monaco', monospace",
           fontSize: "14px",
         }}

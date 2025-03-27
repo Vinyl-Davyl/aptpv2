@@ -2,9 +2,7 @@ import { lazy, Suspense, useMemo, useCallback } from "react";
 import { editor } from "monaco-editor";
 import useAppStore from "../store/store";
 
-const MonacoEditor = lazy(() =>
-  import("@monaco-editor/react").then((mod) => ({ default: mod.Editor }))
-);
+const MonacoEditor = lazy(() => import("@monaco-editor/react").then((mod) => ({ default: mod.Editor })));
 
 export default function JSONEditor({
   value,
@@ -15,10 +13,7 @@ export default function JSONEditor({
 }) {
   const backgroundColor = useAppStore((state) => state.backgroundColor);
 
-  const themeName = useMemo(
-    () => (backgroundColor ? "darkTheme" : "lightTheme"),
-    [backgroundColor]
-  );
+  const themeName = useMemo(() => (backgroundColor ? "darkTheme" : "lightTheme"), [backgroundColor]);
 
   const options: editor.IStandaloneEditorConstructionOptions = useMemo(
     () => ({

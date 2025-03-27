@@ -15,6 +15,9 @@ import AgreementData from "./editors/editorsContainer/AgreementData";
 import LearnNow from "./pages/LearnNow";
 import LearnContent from "./components/Content";
 import useAppStore from "./store/store";
+import ResizableSplitPane from "./components/ResizableSplitPane";
+import SettingsModal from "./components/Settings/SettingsModal";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 const { Content } = Layout;
 
@@ -125,6 +128,7 @@ const TransitionPage: React.FC<{
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("templateMark");
   const [loading, setLoading] = useState<boolean>(false); // Added loading state
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const backgroundColor = useAppStore((state) => state.backgroundColor);
   const textColor = useAppStore((state) => state.textColor);
@@ -222,127 +226,147 @@ const App: React.FC = () => {
 
   return (
     <AntdApp>
-      <Layout style={{ minHeight: "100vh", background: backgroundColor }}>
+      <Layout style={{ minHeight: "100vh" }}>
         <Navbar scrollToFooter={scrollToFooter} />
-        <Content>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <div
-                  style={{
-                    padding: "24px",
-                    minHeight: "100vh",
-                    background: backgroundColor,
-                  }}
-                >
-                  <Row>
-                    <Col xs={24} md={16}>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: "16px",
-                          marginBottom: "20px",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <SampleDropdown setLoading={setLoading} />
-                        <UseShare />
-                        {error && <div style={{ color: "red", marginLeft: "8px", flex: 1 }}>{error}</div>}
+        <Layout>
+          <Sidebar onSettingsClick={() => setSettingsOpen(true)} />
+          <Layout>
+            <Content style={{ background: backgroundColor }}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <div style={{ height: "calc(100vh - 120px)" }}>
+                      <div style={{ padding: "24px 24px 0" }}>
+                        <Row>
+                          <Col xs={24} md={16}>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "16px",
+                                marginBottom: "20px",
+                                flexWrap: "wrap",
+                              }}
+                            >
+                              <SampleDropdown setLoading={setLoading} />
+                              <UseShare />
+                              {error && <div style={{ color: "red", marginLeft: "8px", flex: 1 }}>{error}</div>}
+                            </div>
+                          </Col>
+                        </Row>
                       </div>
-                    </Col>
-                  </Row>
-                  <Row gutter={24}>
-                    <Col xs={24} sm={16} style={{ paddingBottom: "20px" }}>
-                      <Tabs
-                        activeKey={activeTab}
-                        onChange={onTabChange}
-                        items={tabItems}
-                        type="line"
-                        style={{ color: textColor }}
+                      <ResizableSplitPane
+                        backgroundColor={backgroundColor}
+                        defaultSize={65} // Now a number representing percentage
+                        minSize={20} // Minimum percentage size
+                        left={
+                          <div style={{ height: "100%", width: "100%" }}>
+                            <Tabs
+                              activeKey={activeTab}
+                              onChange={onTabChange}
+                              items={tabItems}
+                              type="line"
+                              style={{ color: textColor, height: "100%" }}
+                            />
+                          </div>
+                        }
+                        right={
+                          <div
+                            style={{
+                              backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
+                              color: textColor,
+                              padding: "15px",
+                              borderRadius: "10px",
+                              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                              height: "100%",
+                              position: "relative",
+                            }}
+                          >
+                            <div
+                              style={{
+                                backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
+                                color: textColor,
+                                padding: "15px",
+                                borderRadius: "10px",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                minHeight: "500px",
+                                maxHeight: "85vh",
+                                overflowY: "auto",
+                                position: "relative",
+                              }}
+                            >
+                              <Button
+                                onClick={handleViewTransition}
+                                style={{
+                                  position: "absolute",
+                                  top: "10px",
+                                  right: "10px",
+                                  backgroundColor: "#1b2540",
+                                  color: "#ffffff",
+                                  border: "none",
+                                  borderRadius: "5px",
+                                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.transform = "scale(1.05)";
+                                  e.currentTarget.style.backgroundColor = "#ffffff";
+                                  e.currentTarget.style.color = "#111111";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.transform = "scale(1)";
+                                  e.currentTarget.style.backgroundColor = "#1b2540";
+                                  e.currentTarget.style.color = "#ffffff";
+                                }}
+                              >
+                                View Transition
+                              </Button>
+                              <h3 style={{ fontSize: "16px", margin: "0 0 16px 0" }}>Preview Output</h3>
+                              <p
+                                style={{
+                                  fontSize: "12px",
+                                  opacity: 0.7,
+                                  marginBottom: "16px",
+                                }}
+                              >
+                                The result of merging the JSON data with the template.
+                              </p>
+                              {error ? (
+                                <div style={{ color: "red", fontSize: "14px" }}>{error}</div>
+                              ) : agreementHtml ? (
+                                <div dangerouslySetInnerHTML={{ __html: agreementHtml }} />
+                              ) : loading ? (
+                                <div style={{ textAlign: "center" }}>
+                                  <Spin size="large" style={{ color: textColor }} />
+                                </div>
+                              ) : (
+                                <div style={{ color: "#888", fontSize: "14px" }}>
+                                  No preview available. Please ensure the template, model, and data are valid.
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        }
                       />
-                    </Col>
-                    <Col xs={24} sm={8}>
-                      <div
-                        style={{
-                          backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
-                          color: textColor,
-                          padding: "15px",
-                          borderRadius: "10px",
-                          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                          minHeight: "500px",
-                          maxHeight: "85vh",
-                          overflowY: "auto",
-                          position: "relative",
-                        }}
-                      >
-                        <Button
-                          onClick={handleViewTransition}
-                          style={{
-                            position: "absolute",
-                            top: "10px",
-                            right: "10px",
-                            backgroundColor: "#1b2540",
-                            color: "#ffffff",
-                            border: "none",
-                            borderRadius: "5px",
-                            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = "scale(1.05)";
-                            e.currentTarget.style.backgroundColor = "#ffffff";
-                            e.currentTarget.style.color = "#111111";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = "scale(1)";
-                            e.currentTarget.style.backgroundColor = "#1b2540";
-                            e.currentTarget.style.color = "#ffffff";
-                          }}
-                        >
-                          View Transition
-                        </Button>
-                        <h3 style={{ fontSize: "16px", margin: "0 0 16px 0" }}>Preview Output</h3>
-                        <p
-                          style={{
-                            fontSize: "12px",
-                            opacity: 0.7,
-                            marginBottom: "16px",
-                          }}
-                        >
-                          The result of merging the JSON data with the template.
-                        </p>
-                        {error ? (
-                          <div style={{ color: "red", fontSize: "14px" }}>{error}</div>
-                        ) : agreementHtml ? (
-                          <div dangerouslySetInnerHTML={{ __html: agreementHtml }} />
-                        ) : loading ? (
-                          <div style={{ textAlign: "center" }}>
-                            <Spin size="large" style={{ color: textColor }} />
-                          </div>
-                        ) : (
-                          <div style={{ color: "#888", fontSize: "14px" }}>
-                            No preview available. Please ensure the template, model, and data are valid.
-                          </div>
-                        )}
-                      </div>
-                    </Col>
-                  </Row>
-                </div>
-              }
-            />
-            <Route path="/transition" element={<TransitionPage previewData={agreementHtml} error={error ?? null} />} />
-            <Route path="/learn" element={<LearnNow />}>
-              <Route path="intro" element={<LearnContent file="intro.md" />} />
-              <Route path="module1" element={<LearnContent file="module1.md" />} />
-              <Route path="module2" element={<LearnContent file="module2.md" />} />
-              <Route path="module3" element={<LearnContent file="module3.md" />} />
-            </Route>
-          </Routes>
-        </Content>
+                    </div>
+                  }
+                />
+                <Route
+                  path="/transition"
+                  element={<TransitionPage previewData={agreementHtml} error={error ?? null} />}
+                />
+                <Route path="/learn" element={<LearnNow />}>
+                  <Route path="intro" element={<LearnContent file="intro.md" />} />
+                  <Route path="module1" element={<LearnContent file="module1.md" />} />
+                  <Route path="module2" element={<LearnContent file="module2.md" />} />
+                  <Route path="module3" element={<LearnContent file="module3.md" />} />
+                </Route>
+              </Routes>
+            </Content>
+          </Layout>
+        </Layout>
         <Footer />
-        <Toaster />
+        <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       </Layout>
     </AntdApp>
   );

@@ -3,9 +3,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo } from "react";
 import * as monaco from "monaco-editor";
 import useAppStore from "../store/store";
 
-const MonacoEditor = lazy(() =>
-  import("@monaco-editor/react").then((mod) => ({ default: mod.Editor }))
-);
+const MonacoEditor = lazy(() => import("@monaco-editor/react").then((mod) => ({ default: mod.Editor })));
 
 const concertoKeywords = [
   "map",
@@ -31,14 +29,7 @@ const concertoKeywords = [
   "event",
 ];
 
-const concertoTypes = [
-  "String",
-  "Integer",
-  "Double",
-  "DateTime",
-  "Long",
-  "Boolean",
-];
+const concertoTypes = ["String", "Integer", "Double", "DateTime", "Long", "Boolean"];
 
 const handleEditorWillMount = (monacoInstance: typeof monaco) => {
   monacoInstance.languages.register({
@@ -106,19 +97,13 @@ interface ConcertoEditorProps {
   onChange?: (value: string | undefined) => void;
 }
 
-export default function ConcertoEditor({
-  value,
-  onChange,
-}: ConcertoEditorProps) {
+export default function ConcertoEditor({ value, onChange }: ConcertoEditorProps) {
   const monacoInstance = useMonaco();
   const error = useAppStore((state) => state.error);
   const backgroundColor = useAppStore((state) => state.backgroundColor);
   const ctoErr = error?.startsWith("c:") ? error : undefined;
 
-  const themeName = useMemo(
-    () => (backgroundColor ? "darkTheme" : "lightTheme"),
-    [backgroundColor]
-  );
+  const themeName = useMemo(() => (backgroundColor ? "darkTheme" : "lightTheme"), [backgroundColor]);
 
   const options: monaco.editor.IStandaloneEditorConstructionOptions = {
     minimap: { enabled: false },
