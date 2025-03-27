@@ -3,7 +3,7 @@ import { Button, message } from "antd";
 import useAppStore from "../store/store";
 import styled from "styled-components";
 
-const PrimaryButton = styled(Button)`
+const PrimaryButton = styled(Button)<{ theme: "dark" | "light" }>`
   background: ${(props) => (props.theme === "dark" ? "#19c6c7" : "#1b2540")};
   color: ${(props) => (props.theme === "dark" ? "#050c40" : "#ffffff")};
   border: none;
@@ -18,7 +18,7 @@ const PrimaryButton = styled(Button)`
   }
 `;
 
-const SecondaryButton = styled(Button)`
+const SecondaryButton = styled(Button)<{ theme: "dark" | "light" }>`
   background: transparent;
   color: ${(props) => (props.theme === "dark" ? "#e0e0e0" : "#1b2540")};
   border: 1px solid ${(props) => (props.theme === "dark" ? "#444" : "#d9d9d9")};
