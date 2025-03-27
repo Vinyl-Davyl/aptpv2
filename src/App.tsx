@@ -237,21 +237,22 @@ const App: React.FC = () => {
                   }}
                 >
                   <Row>
-                    <Col xs={24} sm={8}>
-                      <Row
+                    <Col xs={24} md={16}>
+                      <div
                         style={{
-                          marginLeft: "2px",
                           display: "flex",
                           flexDirection: "row",
-                          gap: "50px",
-                          paddingBottom: "20px",
+                          alignItems: "center",
+                          gap: "16px",
+                          marginBottom: "20px",
+                          flexWrap: "wrap",
                         }}
                       >
                         <SampleDropdown setLoading={setLoading} />
                         <UseShare />
-                      </Row>
+                        {error && <div style={{ color: "red", marginLeft: "8px", flex: 1 }}>{error}</div>}
+                      </div>
                     </Col>
-                    <Col span={18}>{error && <div style={{ color: "red", marginRight: "25px" }}>{error}</div>}</Col>
                   </Row>
                   <Row gutter={24}>
                     <Col xs={24} sm={16} style={{ paddingBottom: "20px" }}>
