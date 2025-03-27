@@ -91,19 +91,19 @@ export const ContentContainer = styled.div`
   }
 
   /* Links */
-  a {
+  :is(a) {
     color: ${(props) => props.theme.hoverColor};
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
   }
 
-  a:hover {
+  :is(a):hover {
     color: ${(props) => (props.theme.bgColor === "#0a1a2f" ? "#a0c4ff" : "#19c6c7")};
     text-decoration: none;
   }
 
-  a::after {
+  :is(a)::after {
     content: "";
     position: absolute;
     width: 0;
@@ -114,7 +114,7 @@ export const ContentContainer = styled.div`
     transition: width 0.3s ease;
   }
 
-  a:hover::after {
+  :is(a):hover::after {
     width: 100%;
   }
 
