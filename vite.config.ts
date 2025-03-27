@@ -3,7 +3,7 @@ import { defineConfig as defineVitestConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import nodePolyfills from "vite-plugin-node-stdlib-browser";
 import { visualizer } from "rollup-plugin-visualizer";
-// https://vitejs.dev/config/
+
 const viteConfig = defineViteConfig({
   plugins: [
     nodePolyfills(),
@@ -18,6 +18,8 @@ const viteConfig = defineViteConfig({
     needsInterop: ["@accordproject/template-engine"],
   },
   build: {
+    // Reduce chunk size to avoid memory issues
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       onwarn(warning, warn) {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
@@ -25,11 +27,22 @@ const viteConfig = defineViteConfig({
         }
         warn(warning);
       },
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "styled-components", "antd", "@ant-design/icons"],
+          accordproject: [
+            "@accordproject/concerto-core",
+            "@accordproject/markdown-common",
+            "@accordproject/markdown-template",
+            "@accordproject/markdown-transform",
+            "@accordproject/template-engine",
+          ],
+        },
+      },
     },
   },
 });
 
-// https://vitest.dev/config/
 const vitestConfig = defineVitestConfig({
   test: {
     globals: true,
