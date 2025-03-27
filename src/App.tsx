@@ -19,6 +19,7 @@ import SettingsModal from "./components/Settings/SettingsModal";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Console from "./components/Console/Console";
 import { handleError } from "./utils/console/errorHandling";
+import TopControls from "./components/TopControls";
 
 const { Content } = Layout;
 
@@ -244,19 +245,8 @@ const App: React.FC = () => {
                     <div style={{ height: "calc(100vh - 100px)", display: "flex", flexDirection: "column" }}>
                       <div style={{ padding: "24px 0 0 0" }}>
                         <Row>
-                          <Col xs={24} md={16} style={{ paddingLeft: "24px" }}>
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "16px",
-                                marginBottom: "20px",
-                                flexWrap: "wrap",
-                              }}
-                            >
-                              <SampleDropdown setLoading={setLoading} />
-                              <UseShare />
-                            </div>
+                          <Col xs={24} style={{ paddingLeft: "24px", paddingRight: "24px" }}>
+                            <TopControls setLoading={setLoading} onSettingsClick={() => setSettingsOpen(true)} />
                           </Col>
                         </Row>
                       </div>
@@ -282,10 +272,12 @@ const App: React.FC = () => {
                                 backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
                                 color: textColor,
                                 padding: "15px",
-                                borderRadius: "10px",
-                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                borderTop: `0.5px solid ${backgroundColor === "#2a2a2a" ? "#444" : "#ddd"}`,
                                 height: "100%",
+                                width: "100%",
                                 position: "relative",
+                                display: "flex",
+                                flexDirection: "column",
                               }}
                             >
                               <div
@@ -293,10 +285,8 @@ const App: React.FC = () => {
                                   backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
                                   color: textColor,
                                   padding: "15px",
-                                  borderRadius: "10px",
-                                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                                  minHeight: "500px",
-                                  maxHeight: "85vh",
+                                  flex: 1,
+                                  width: "100%",
                                   overflowY: "auto",
                                   position: "relative",
                                 }}

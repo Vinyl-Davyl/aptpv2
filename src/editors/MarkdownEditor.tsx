@@ -11,14 +11,12 @@ export default function MarkdownEditor({
   value: string;
   onChange?: (value: string | undefined) => void;
 }) {
-  const storeBackgroundColor = useAppStore((state) => state.backgroundColor);
-  // Removed unused textColor
+  const backgroundColor = useAppStore((state) => state.backgroundColor);
   const monaco = useMonaco();
 
-  // Determine colors dynamically
-  const isLightMode = storeBackgroundColor === "#e6f0fa";
-  // Removed unused backgroundColor
-  const themeName = isLightMode ? "lightTheme" : "darkTheme";
+  // Determine theme based on background color
+  const isDarkMode = backgroundColor === "#2a2a2a" || backgroundColor === "#4a4a4a";
+  const themeName = isDarkMode ? "darkTheme" : "lightTheme";
 
   useEffect(() => {
     if (monaco) {
@@ -27,7 +25,7 @@ export default function MarkdownEditor({
         inherit: true,
         rules: [],
         colors: {
-          "editor.background": "#f0f7ff",
+          "editor.background": "#ffffff",
           "editor.foreground": "#000000",
           "editor.lineHighlightBorder": "#b3c7e6",
         },
@@ -47,7 +45,7 @@ export default function MarkdownEditor({
       // Apply the selected theme dynamically
       monaco.editor.setTheme(themeName);
     }
-  }, [monaco, themeName]); // 🔥 Ensure `themeName` triggers updates
+  }, [monaco, themeName]);
 
   const editorOptions = {
     minimap: { enabled: false },

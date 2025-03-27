@@ -1,4 +1,4 @@
-import { Button, Dropdown, Space, message } from "antd";
+import { Button, Dropdown, message } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useCallback, useMemo, useState } from "react";
 import useAppStore from "../store/store";
@@ -7,56 +7,44 @@ import { useStoreWithEqualityFn } from "zustand/traditional";
 import styled from "styled-components";
 import { handleError } from "../utils/console/errorHandling";
 
-// Styled components for custom UI
-const StyledButton = styled(Button)`
-  background-color: #1b2540;
-  color: #ffffff;
+const PrimaryButton = styled(Button)<{ theme: "dark" | "light" }>`
+  background: ${(props) => (props.theme === "dark" ? "#19c6c7" : "#1b2540")};
+  color: ${(props) => (props.theme === "dark" ? "#050c40" : "#ffffff")};
   border: none;
-  border-radius: 5px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  width: 200px; /* Increased width for the button */
-  justify-content: center; /* Spread text and icon */
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 16px;
 
-  &:hover {
-    background-color: #ffffff;
-    color: #050c40;
-    border: 1px solid #1b2540;
+  &:hover,
+  &:focus {
+    background: ${(props) => (props.theme === "dark" ? "#0fb1b2" : "#2a3a5f")};
+    color: ${(props) => (props.theme === "dark" ? "#050c40" : "#ffffff")};
   }
 `;
 
-const StyledDropdown = styled(Dropdown)`
-  .ant-dropdown-menu {
-    background-color: #1b2540;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    padding: 8px 0;
-    width: 200px; /* Match the button width or make it wider */
-  }
+const SecondaryButton = styled(Button)<{ theme: "dark" | "light" }>`
+  background: transparent;
+  color: ${(props) => (props.theme === "dark" ? "#e0e0e0" : "#1b2540")};
+  border: 1px solid ${(props) => (props.theme === "dark" ? "#444" : "#d9d9d9")};
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 16px;
 
-  .ant-dropdown-menu-item {
-    color: #ffffff;
-    font-size: 14px;
-    padding: 8px 16px;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #19c6c7;
-      color: #050c40;
-    }
+  &:hover,
+  &:focus {
+    border-color: ${(props) => (props.theme === "dark" ? "#19c6c7" : "#1b2540")};
+    color: ${(props) => (props.theme === "dark" ? "#19c6c7" : "#1b2540")};
   }
 `;
 
 interface SampleDropdownProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  buttonType?: "primary" | "secondary";
+  theme?: "dark" | "light";
+  icon?: React.ReactNode;
 }
 
-function SampleDropdown({ setLoading }: SampleDropdownProps) {
+function SampleDropdown({ setLoading, buttonType = "primary", theme = "dark", icon }: SampleDropdownProps) {
   const { samples, loadSample } = useStoreWithEqualityFn(
     useAppStore,
     (state) => ({
@@ -83,7 +71,7 @@ function SampleDropdown({ setLoading }: SampleDropdownProps) {
         setLoading(true);
         try {
           await loadSample(key);
-          message.info(`Loaded ${key} sample`);
+          message.success(`Loaded ${key} sample`);
           setSelectedSample(key);
         } catch (err) {
           handleError(err instanceof Error ? err.message : "An error occurred loading the sample");
@@ -95,15 +83,16 @@ function SampleDropdown({ setLoading }: SampleDropdownProps) {
     [loadSample, setLoading]
   );
 
+  const ButtonComponent = buttonType === "primary" ? PrimaryButton : SecondaryButton;
+
   return (
-    <Space>
-      <StyledDropdown menu={{ items, onClick: handleMenuClick }} trigger={["click"]}>
-        <StyledButton aria-label="Load sample dropdown">
-          {selectedSample || "Load Sample"}
-          <DownOutlined />
-        </StyledButton>
-      </StyledDropdown>
-    </Space>
+    <Dropdown menu={{ items, onClick: handleMenuClick }} trigger={["click"]}>
+      <ButtonComponent theme={theme} aria-label="Load sample dropdown">
+        {icon}
+        {selectedSample || "Load Sample"}
+        <DownOutlined style={{ marginLeft: 8 }} />
+      </ButtonComponent>
+    </Dropdown>
   );
 }
 

@@ -1,33 +1,45 @@
 import { useState } from "react";
 import { Button, message } from "antd";
-import { ShareAltOutlined } from "@ant-design/icons";
 import useAppStore from "../store/store";
 import styled from "styled-components";
 
-// Styled button matching SampleDropdown
-const StyledShareButton = styled(Button)`
-  background-color: #ffffff;
-  color: #1b2540;
+const PrimaryButton = styled(Button)`
+  background: ${(props) => (props.theme === "dark" ? "#19c6c7" : "#1b2540")};
+  color: ${(props) => (props.theme === "dark" ? "#050c40" : "#ffffff")};
   border: none;
-  border-radius: 5px;
-  border: 1px solid #1b2540;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  width: 200px; /* Increased width for the button */
-  justify-content: center; /* Spread text and icon */
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 16px;
 
-  &:hover {
-    background-color: #ffffff;
-    color: #050c40;
+  &:hover,
+  &:focus {
+    background: ${(props) => (props.theme === "dark" ? "#0fb1b2" : "#2a3a5f")};
+    color: ${(props) => (props.theme === "dark" ? "#050c40" : "#ffffff")};
   }
 `;
 
-const UseShare = () => {
+const SecondaryButton = styled(Button)`
+  background: transparent;
+  color: ${(props) => (props.theme === "dark" ? "#e0e0e0" : "#1b2540")};
+  border: 1px solid ${(props) => (props.theme === "dark" ? "#444" : "#d9d9d9")};
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 16px;
+
+  &:hover,
+  &:focus {
+    border-color: ${(props) => (props.theme === "dark" ? "#19c6c7" : "#1b2540")};
+    color: ${(props) => (props.theme === "dark" ? "#19c6c7" : "#1b2540")};
+  }
+`;
+
+interface UseShareProps {
+  buttonType?: "primary" | "secondary";
+  theme?: "dark" | "light";
+  icon?: React.ReactNode;
+}
+
+const UseShare = ({ buttonType = "secondary", theme = "dark", icon }: UseShareProps) => {
   const generateShareableLink = useAppStore((state) => state.generateShareableLink);
   const [copied, setCopied] = useState(false);
 
@@ -42,10 +54,13 @@ const UseShare = () => {
     });
   };
 
+  const ButtonComponent = buttonType === "primary" ? PrimaryButton : SecondaryButton;
+
   return (
-    <StyledShareButton icon={<ShareAltOutlined />} onClick={handleCopy}>
+    <ButtonComponent theme={theme} onClick={handleCopy}>
+      {icon}
       {copied ? "Copied!" : "Share"}
-    </StyledShareButton>
+    </ButtonComponent>
   );
 };
 
