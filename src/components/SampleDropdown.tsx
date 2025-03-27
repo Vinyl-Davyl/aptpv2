@@ -5,6 +5,7 @@ import useAppStore from "../store/store";
 import { shallow } from "zustand/shallow";
 import { useStoreWithEqualityFn } from "zustand/traditional";
 import styled from "styled-components";
+import { handleError } from "../utils/console/errorHandling";
 
 // Styled components for custom UI
 const StyledButton = styled(Button)`
@@ -84,8 +85,8 @@ function SampleDropdown({ setLoading }: SampleDropdownProps) {
           await loadSample(key);
           message.info(`Loaded ${key} sample`);
           setSelectedSample(key);
-        } catch (error) {
-          message.error("Failed to load sample");
+        } catch (err) {
+          handleError(err instanceof Error ? err.message : "An error occurred loading the sample");
         } finally {
           setLoading(false);
         }

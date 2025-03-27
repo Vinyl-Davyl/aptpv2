@@ -4,7 +4,6 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { App as AntdApp, Layout, Row, Col, Tabs, Button, Spin } from "antd"; // Added Spin for loading
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { Toaster } from "sonner";
 import SampleDropdown from "./components/SampleDropdown";
 import UseShare from "./components/UseShare";
 import Navbar from "./components/Navbar";
@@ -18,6 +17,8 @@ import useAppStore from "./store/store";
 import ResizableSplitPane from "./components/ResizableSplitPane";
 import SettingsModal from "./components/Settings/SettingsModal";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Console from "./components/Console/Console";
+import { handleError } from "./utils/console/errorHandling";
 
 const { Content } = Layout;
 
@@ -153,7 +154,11 @@ const App: React.FC = () => {
     }
   };
 
-  const handleViewTransition = (): void => {
+  const handleViewTransition = () => {
+    if (error) {
+      handleError("Cannot transition with errors present");
+      return;
+    }
     navigate("/transition");
   };
 
@@ -251,15 +256,15 @@ const App: React.FC = () => {
                             >
                               <SampleDropdown setLoading={setLoading} />
                               <UseShare />
-                              {error && <div style={{ color: "red", marginLeft: "8px", flex: 1 }}>{error}</div>}
+                              {/* {error && <div style={{ color: "red", marginLeft: "8px", flex: 1 }}>{error}</div>} */}
                             </div>
                           </Col>
                         </Row>
                       </div>
                       <ResizableSplitPane
                         backgroundColor={backgroundColor}
-                        defaultSize={65} // Now a number representing percentage
-                        minSize={20} // Minimum percentage size
+                        defaultSize={65}
+                        minSize={20}
                         left={
                           <div style={{ height: "100%", width: "100%" }}>
                             <Tabs
@@ -366,6 +371,7 @@ const App: React.FC = () => {
           </Layout>
         </Layout>
         <Footer />
+        <Console />
         <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       </Layout>
     </AntdApp>

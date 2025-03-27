@@ -20,7 +20,7 @@ interface AppState {
   data: string;
   editorAgreementData: string;
   agreementHtml: string;
-  error: string | undefined;
+  error: string | null;
   samples: Array<Sample>;
   sampleName: string;
   backgroundColor: string;
@@ -39,6 +39,16 @@ interface AppState {
   loadFromLink: (compressedData: string) => Promise<void>;
   toggleDarkMode: () => void;
   setTemplateModel: (value: string) => void;
+  consoleMessages: ConsoleMessage[];
+  addConsoleMessage: (type: "error" | "info", content: string) => void;
+  clearConsole: () => void;
+  setError: (error: string | null) => void;
+}
+
+interface ConsoleMessage {
+  type: "error" | "info";
+  content: string;
+  timestamp: Date;
 }
 
 export interface DecompressedData {
@@ -83,7 +93,8 @@ const useAppStore = create<AppState>()(
         data: JSON.stringify(playground.DATA, null, 2),
         editorAgreementData: JSON.stringify(playground.DATA, null, 2),
         agreementHtml: "",
-        error: undefined,
+        error: null,
+        setError: (error) => set({ error }),
         samples: SAMPLES,
         init: async () => {
           const params = new URLSearchParams(window.location.search);
@@ -94,6 +105,16 @@ const useAppStore = create<AppState>()(
             await get().rebuild();
           }
         },
+        // test errors
+        // init: async () => {
+        //   try {
+        //     throw new Error("Test error: Initialization failed");
+        //     const params = new URLSearchParams(window.location.search);
+        //     // ... rest of the code
+        //   } catch (err) {
+        //     handleError(err instanceof Error ? err.message : "An unknown error occurred");
+        //   }
+        // },
         loadSample: async (name: string) => {
           const sample = SAMPLES.find((s) => s.NAME === name);
           if (sample) {
@@ -219,6 +240,19 @@ const useAppStore = create<AppState>()(
             };
           });
         },
+        consoleMessages: [],
+        addConsoleMessage: (type, content) =>
+          set((state) => ({
+            consoleMessages: [
+              ...state.consoleMessages,
+              {
+                type,
+                content,
+                timestamp: new Date(),
+              },
+            ],
+          })),
+        clearConsole: () => set({ consoleMessages: [] }),
       }))
     ),
     {

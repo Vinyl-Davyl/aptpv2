@@ -1,4 +1,5 @@
 import useAppStore from "../../store/store";
+import { clearError, handleError } from "../../utils/console/errorHandling";
 import MarkdownEditor from "../MarkdownEditor";
 
 const TemplateMarkdown: React.FC = () => {
@@ -8,8 +9,13 @@ const TemplateMarkdown: React.FC = () => {
   const value = useAppStore((state) => state.editorValue);
 
   const handleChange = (value: string | undefined): void => {
-    if (value !== undefined) {
-      setTemplateMarkdown(value);
+    try {
+      if (value !== undefined) {
+        setTemplateMarkdown(value);
+      }
+      clearError();
+    } catch (err) {
+      handleError(err instanceof Error ? err.message : "An error occurred in template");
     }
   };
 

@@ -1,4 +1,5 @@
 import useAppStore from "../../store/store";
+import { clearError, handleError } from "../../utils/console/errorHandling";
 import ConcertoEditor from "../ConcertoEditor";
 
 const TemplateModel: React.FC = () => {
@@ -8,8 +9,13 @@ const TemplateModel: React.FC = () => {
   const value = useAppStore((state) => state.modelValue);
 
   const handleChange = (value: string | undefined): void => {
-    if (value !== undefined) {
-      setTemplateModel(value);
+    try {
+      if (value !== undefined) {
+        setTemplateModel(value);
+      }
+      clearError();
+    } catch (err) {
+      handleError(err instanceof Error ? err.message : "An error occurred in template");
     }
   };
 

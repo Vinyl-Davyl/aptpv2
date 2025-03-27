@@ -1,4 +1,5 @@
 import useAppStore from "../../store/store";
+import { clearError, handleError } from "../../utils/console/errorHandling";
 import JSONEditor from "../JSONEditor";
 
 // Define the component as a functional component with React.FC
@@ -11,8 +12,13 @@ const AgreementData: React.FC = () => {
 
   // Handle changes to the editor value
   const handleChange = (value: string | undefined): void => {
-    if (value !== undefined) {
-      setAgreementData(value);
+    try {
+      if (value !== undefined) {
+        setAgreementData(value);
+      }
+      clearError();
+    } catch (err) {
+      handleError(err instanceof Error ? err.message : "An error occurred in template");
     }
   };
 
