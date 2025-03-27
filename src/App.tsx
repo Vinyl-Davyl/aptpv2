@@ -241,10 +241,10 @@ const App: React.FC = () => {
                 <Route
                   path="/"
                   element={
-                    <div style={{ height: "calc(100vh - 120px)" }}>
-                      <div style={{ padding: "24px 24px 0" }}>
+                    <div style={{ height: "calc(100vh - 100px)", display: "flex", flexDirection: "column" }}>
+                      <div style={{ padding: "24px 0 0 0" }}>
                         <Row>
-                          <Col xs={24} md={16}>
+                          <Col xs={24} md={16} style={{ paddingLeft: "24px" }}>
                             <div
                               style={{
                                 display: "flex",
@@ -256,38 +256,27 @@ const App: React.FC = () => {
                             >
                               <SampleDropdown setLoading={setLoading} />
                               <UseShare />
-                              {/* {error && <div style={{ color: "red", marginLeft: "8px", flex: 1 }}>{error}</div>} */}
                             </div>
                           </Col>
                         </Row>
                       </div>
-                      <ResizableSplitPane
-                        backgroundColor={backgroundColor}
-                        defaultSize={65}
-                        minSize={20}
-                        left={
-                          <div style={{ height: "100%", width: "100%" }}>
-                            <Tabs
-                              activeKey={activeTab}
-                              onChange={onTabChange}
-                              items={tabItems}
-                              type="line"
-                              style={{ color: textColor, height: "100%" }}
-                            />
-                          </div>
-                        }
-                        right={
-                          <div
-                            style={{
-                              backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
-                              color: textColor,
-                              padding: "15px",
-                              borderRadius: "10px",
-                              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                              height: "100%",
-                              position: "relative",
-                            }}
-                          >
+                      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                        <ResizableSplitPane
+                          backgroundColor={backgroundColor}
+                          defaultSize={65}
+                          minSize={20}
+                          left={
+                            <div style={{ height: "100%", width: "100%" }}>
+                              <Tabs
+                                activeKey={activeTab}
+                                onChange={onTabChange}
+                                items={tabItems}
+                                type="line"
+                                style={{ color: textColor, height: "100%" }}
+                              />
+                            </div>
+                          }
+                          right={
                             <div
                               style={{
                                 backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
@@ -295,64 +284,76 @@ const App: React.FC = () => {
                                 padding: "15px",
                                 borderRadius: "10px",
                                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                                minHeight: "500px",
-                                maxHeight: "85vh",
-                                overflowY: "auto",
+                                height: "100%",
                                 position: "relative",
                               }}
                             >
-                              <Button
-                                onClick={handleViewTransition}
+                              <div
                                 style={{
-                                  position: "absolute",
-                                  top: "10px",
-                                  right: "10px",
-                                  backgroundColor: "#1b2540",
-                                  color: "#ffffff",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.transform = "scale(1.05)";
-                                  e.currentTarget.style.backgroundColor = "#ffffff";
-                                  e.currentTarget.style.color = "#111111";
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.transform = "scale(1)";
-                                  e.currentTarget.style.backgroundColor = "#1b2540";
-                                  e.currentTarget.style.color = "#ffffff";
+                                  backgroundColor: backgroundColor === "#2a2a2a" ? "#3a3a3a" : "#ffffff",
+                                  color: textColor,
+                                  padding: "15px",
+                                  borderRadius: "10px",
+                                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                  minHeight: "500px",
+                                  maxHeight: "85vh",
+                                  overflowY: "auto",
+                                  position: "relative",
                                 }}
                               >
-                                Dynamic View
-                              </Button>
-                              <h3 style={{ fontSize: "16px", margin: "0 0 16px 0" }}>Preview Output</h3>
-                              <p
-                                style={{
-                                  fontSize: "12px",
-                                  opacity: 0.7,
-                                  marginBottom: "16px",
-                                }}
-                              >
-                                The result of merging the JSON data with the template.
-                              </p>
-                              {error ? (
-                                <div style={{ color: "red", fontSize: "14px" }}>{error}</div>
-                              ) : agreementHtml ? (
-                                <div dangerouslySetInnerHTML={{ __html: agreementHtml }} />
-                              ) : loading ? (
-                                <div style={{ textAlign: "center" }}>
-                                  <Spin size="large" style={{ color: textColor }} />
-                                </div>
-                              ) : (
-                                <div style={{ color: "#888", fontSize: "14px" }}>
-                                  No preview available. Please ensure the template, model, and data are valid.
-                                </div>
-                              )}
+                                <Button
+                                  onClick={handleViewTransition}
+                                  style={{
+                                    position: "absolute",
+                                    top: "10px",
+                                    right: "10px",
+                                    backgroundColor: "#1b2540",
+                                    color: "#ffffff",
+                                    border: "none",
+                                    borderRadius: "5px",
+                                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = "scale(1.05)";
+                                    e.currentTarget.style.backgroundColor = "#ffffff";
+                                    e.currentTarget.style.color = "#111111";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = "scale(1)";
+                                    e.currentTarget.style.backgroundColor = "#1b2540";
+                                    e.currentTarget.style.color = "#ffffff";
+                                  }}
+                                >
+                                  Dynamic View
+                                </Button>
+                                <h3 style={{ fontSize: "16px", margin: "0 0 16px 0" }}>Preview Output</h3>
+                                <p
+                                  style={{
+                                    fontSize: "12px",
+                                    opacity: 0.7,
+                                    marginBottom: "16px",
+                                  }}
+                                >
+                                  The result of merging the JSON data with the template.
+                                </p>
+                                {error ? (
+                                  <div style={{ color: "red", fontSize: "14px" }}>{error}</div>
+                                ) : agreementHtml ? (
+                                  <div dangerouslySetInnerHTML={{ __html: agreementHtml }} />
+                                ) : loading ? (
+                                  <div style={{ textAlign: "center" }}>
+                                    <Spin size="large" style={{ color: textColor }} />
+                                  </div>
+                                ) : (
+                                  <div style={{ color: "#888", fontSize: "14px" }}>
+                                    No preview available. Please ensure the template, model, and data are valid.
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        }
-                      />
+                          }
+                        />
+                      </div>
                     </div>
                   }
                 />
@@ -371,7 +372,6 @@ const App: React.FC = () => {
           </Layout>
         </Layout>
         <Footer />
-        <Console />
         <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       </Layout>
     </AntdApp>

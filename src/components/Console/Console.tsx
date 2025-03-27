@@ -4,15 +4,13 @@ import { CloseOutlined, WarningOutlined } from "@ant-design/icons";
 import useAppStore from "../../store/store";
 
 const ConsoleWrapper = styled.div<{ isVisible: boolean; isDark: boolean }>`
-  position: fixed;
-  bottom: 0;
-  left: 56px;
-  right: 0;
+  width: 100%;
   height: ${({ isVisible }) => (isVisible ? "200px" : "30px")};
   background-color: ${({ isDark }) => (isDark ? "#1E1E1E" : "#f0f0f0")};
   border-top: 1px solid ${({ isDark }) => (isDark ? "#333" : "#ddd")};
   transition: height 0.3s ease;
-  z-index: 1000;
+  margin-top: 0;
+  margin-bottom: -20px;
 `;
 
 const ConsoleHeader = styled.div<{ isDark: boolean }>`
@@ -51,6 +49,7 @@ const ConsoleMessage = styled.div<{ type: "error" | "info"; isDark: boolean }>`
 const Console: React.FC = () => {
   const [isVisible, setIsVisible] = React.useState(false);
   const backgroundColor = useAppStore((state) => state.backgroundColor);
+  const textColor = useAppStore((state) => state.textColor);
   const isDark = backgroundColor === "#2a2a2a";
   const consoleMessages = useAppStore((state) => state.consoleMessages);
   const clearConsole = useAppStore((state) => state.clearConsole);
@@ -60,10 +59,13 @@ const Console: React.FC = () => {
       <ConsoleHeader isDark={isDark} onClick={() => setIsVisible(!isVisible)}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <WarningOutlined style={{ color: consoleMessages.some((m) => m.type === "error") ? "#ff4d4f" : "#1890ff" }} />
-          <span>Console {consoleMessages.length > 0 && `(${consoleMessages.length})`}</span>
+          <span style={{ color: textColor }}>
+            Console {consoleMessages.length > 0 && `(${consoleMessages.length})`}
+          </span>
         </div>
         {isVisible && (
           <CloseOutlined
+            style={{ color: textColor }}
             onClick={(e) => {
               e.stopPropagation();
               clearConsole();

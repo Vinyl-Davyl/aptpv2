@@ -1,6 +1,7 @@
 import React from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import styled from "styled-components";
+import Console from "./Console/Console";
 
 // Styled resizer handle
 const StyledResizeHandle = styled(PanelResizeHandle)<{ theme: "dark" | "light" }>`
@@ -30,8 +31,17 @@ const StyledResizeHandle = styled(PanelResizeHandle)<{ theme: "dark" | "light" }
 
 // Container for the panel group
 const PanelContainer = styled.div`
-  height: calc(100vh - 150px);
+  height: calc(100vh - 200px);
   width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PanelGroupContainer = styled.div`
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
 `;
 
 interface ResizableSplitPaneProps {
@@ -54,29 +64,32 @@ const ResizableSplitPane: React.FC<ResizableSplitPaneProps> = ({
 
   return (
     <PanelContainer>
-      <PanelGroup direction="horizontal">
-        <Panel
-          defaultSize={defaultSize}
-          minSize={minSize}
-          style={{
-            height: "100%",
-            overflow: "auto",
-          }}
-        >
-          {left}
-        </Panel>
+      <PanelGroupContainer>
+        <PanelGroup direction="horizontal">
+          <Panel
+            defaultSize={defaultSize}
+            minSize={minSize}
+            style={{
+              height: "100%",
+              overflow: "auto",
+            }}
+          >
+            {left}
+          </Panel>
 
-        <StyledResizeHandle theme={theme} />
+          <StyledResizeHandle theme={theme} />
 
-        <Panel
-          style={{
-            height: "100%",
-            overflow: "auto",
-          }}
-        >
-          {right}
-        </Panel>
-      </PanelGroup>
+          <Panel
+            style={{
+              height: "100%",
+              overflow: "auto",
+            }}
+          >
+            {right}
+          </Panel>
+        </PanelGroup>
+      </PanelGroupContainer>
+      <Console />
     </PanelContainer>
   );
 };
