@@ -64,7 +64,7 @@ export const SidebarSectionTitle = styled.h3`
 `;
 
 export const NavItem = styled.div`
-  a {
+  :is(a) {
     text-decoration: none;
     color: ${(props) => props.theme.textColor};
     display: block;

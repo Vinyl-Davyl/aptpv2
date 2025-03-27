@@ -80,7 +80,7 @@ export const HelperText = styled.div`
   flex: 1;
   color: #333;
 
-  a {
+  :is(a) {
     color: #19c6c7 !important;
     text-decoration: none;
 
@@ -89,7 +89,7 @@ export const HelperText = styled.div`
     }
   }
 
-  & > a {
+  & > :is(a) {
     margin-left: 0.25rem;
   }
 `;
