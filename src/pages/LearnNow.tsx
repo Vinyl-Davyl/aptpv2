@@ -15,7 +15,7 @@ import {
   ModuleNumber,
   Divider,
 } from "../styles/pages/LearnNow";
-import { BookOpen, BookText, ChevronRight } from "lucide-react";
+import { BookText, ChevronRight, Lightbulb } from "lucide-react";
 
 interface Theme {
   bgColor: string;
@@ -40,8 +40,8 @@ const LearnNow: React.FC = () => {
       <LearnNowContainer>
         <SidebarContainer>
           <SidebarHeader>
-            <BookOpen size={24} />
-            <h2>Learning Center</h2>
+            <Lightbulb size={24} />
+            <h2>Learning Pathway</h2>
           </SidebarHeader>
 
           <Divider />
