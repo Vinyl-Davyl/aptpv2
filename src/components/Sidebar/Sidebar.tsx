@@ -25,6 +25,7 @@ const IconButton = styled.div`
   align-items: center;
   justify-content: center;
   color: #ffffff;
+  margin-top: 15px;
   cursor: pointer;
   transition: all 0.3s;
 
@@ -40,7 +41,6 @@ const IconButton = styled.div`
 
 const SettingsButton = styled(IconButton)`
   margin-top: auto;
-  margin-bottom: 16px;
 `;
 
 interface SidebarProps {
