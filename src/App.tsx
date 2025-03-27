@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 import { useEffect, useState } from "react";
 import { App as AntdApp, Layout, Row, Col, Tabs, Button, Spin } from "antd"; // Added Spin for loading
